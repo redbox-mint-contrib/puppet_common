@@ -1,0 +1,18 @@
+#!/usr/bin/env ruby
+#^syntax detection
+
+## To use with librarian-puppet (or r10k).
+# Typically the steps to set this up are
+# gem install librarian-puppet
+# cd $(puppet config print confdir)
+# librarian-puppet init
+# <<Then clobber default Puppetfile with this one>>
+# librarian-puppet install (this will install modules below)
+
+forge "https://forgeapi.puppetlabs.com"
+
+# use dependencies defined in metadata.json
+#metadata
+
+# use dependencies defined in Modulefile
+# modulefile

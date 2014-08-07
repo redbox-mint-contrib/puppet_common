@@ -1,4 +1,4 @@
-class puppet_common::puppet_init (
+class puppet_common::init_puppet (
   $conf_file  = "puppet.conf",
   $home_dir   = "/var/lib/puppet",
   $system_dir = "/etc/puppet",) {

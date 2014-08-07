@@ -1,4 +1,4 @@
-define puppet_common::add_directory ($end_path = $title, $owner, $parent_directory = undef, $mode = '0750') {
+define puppet_common::add_directory ($end_path = $title, $owner = 'puppet', $parent_directory = undef, $mode = '0750') {
   $full_path = "${parent_directory}/${end_path}"
 
   create_parent_directories($full_path)

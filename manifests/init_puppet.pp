@@ -11,10 +11,6 @@ class puppet_common::init_puppet (
     ensure => file,
     source => "puppet:///modules/puppet_common/${conf_file}",
   } ->
-  puppet_common::add_directory { ".puppet":
-    owner            => "puppet",
-    parent_directory => $home_dir
-  } ->
   file { "${home_dir}/.puppet":
     ensure => link,
     target => "${system_dir}",

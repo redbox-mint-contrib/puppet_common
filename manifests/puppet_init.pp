@@ -18,12 +18,12 @@ class puppet_common::puppet_init (
   file { "${home_dir}/.puppet":
     ensure => link,
     target => "${system_dir}",
-  }
+  } -> notify { 'reset puppet.conf': message => "WARNING: You have reset puppet's conf file." }
 
   # set up .bashrc for use with non-login puppet user.
   file { "${home_dir}/.bashrc":
     ensure => file,
     source => "puppet:///modules/puppet_common/bashrc",
-  }
+  } -> notify { 'reset .bashrc': message => "WARNING: You have reset puppet's .bashrc file." }
 
 }

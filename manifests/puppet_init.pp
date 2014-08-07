@@ -2,12 +2,12 @@ class puppet_common::puppet_init (
   $conf_file  = "puppet.conf",
   $home_dir   = "/var/lib/puppet",
   $system_dir = "/etc/puppet",) {
+  # set up puppet configuration file
   puppet_common::add_directory { "puppet":
     owner            => "puppet",
     parent_directory => "/etc"
   } ->
-  file { $conf_file:
-    path   => "${system_dir}/${conf_file}",
+  file { "${system_dir}/${conf_file}":
     ensure => file,
     source => "puppet:///modules/puppet_common/${conf_file}",
   } ->
@@ -15,10 +15,15 @@ class puppet_common::puppet_init (
     owner            => "puppet",
     parent_directory => $home_dir
   } ->
-  file { $conf_link:
-    path   => "${home_dir}/.puppet",
+  file { "${home_dir}/.puppet":
     ensure => link,
     target => "${system_dir}",
+  }
+
+  # set up .bashrc for use with non-login puppet user.
+  file { "${home_dir}/.bashrc":
+    ensure => file,
+    source => "puppet:///modules/puppet_common/bashrc",
   }
 
 }

@@ -27,3 +27,4 @@ function check_agent {
 }
 
 check_agent
+[[ssh-add -l]] || echo "INFO : You need to update ~/.ssh_agent by adding in the default private ssh-key to use"

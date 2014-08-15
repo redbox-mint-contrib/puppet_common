@@ -15,7 +15,8 @@ class puppet_common::init_puppet ($conf_file = "puppet.conf", $home_dir = "/root
   file { "${home_dir}/.ssh_agent":
     ensure => file,
     source => "puppet:///modules/puppet_common/ssh_agent",
-  } -> notify { 'reset .ssh_agent': message => "WARNING: You have reset puppet's .ssh_agent config." } ->
+  } -> notify { 'reset .ssh_agent': message => "WARNING: You have reset puppet's .ssh_agent config. Update that file with the ssh key needed for remote git repo interaction." 
+  } ->
   file_line { 'agent_to_bashrc':
     path  => "${home_dir}/.bashrc",
     line  => "[[ -s ~/.ssh_agent ]] && . ~/.ssh_agent",

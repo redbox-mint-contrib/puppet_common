@@ -1,4 +1,4 @@
-class puppet_common::update_modules ($target_path = "/etc/puppet/Puppetfile", $modules = hiera_array(modules, []),) {
+class puppet_common::update_modules ($target_path = "/etc/puppet/Puppetfile", $modules = hiera_array(modules, undef),) {
   class { 'puppet_common::init_modules': }
 
   $modules.each |$key, $value| {

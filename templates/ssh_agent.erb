@@ -25,10 +25,10 @@ function check_agent {
 }
 
 function add_agent {
-        echo "INFO: ssh identity needs to be added."
     <%- if @ssh_key -%>
 		ssh-add ~/.ssh/<%= @ssh_key %> > /dev/null
 	<%- else -%>
+	 	echo "INFO: ssh identity needs to be added."
 	    # uncomment line below and add ssh private key to use for ssh interaction
 		#ssh-add ~/.ssh/... > /dev/null
     <%- end -%>    

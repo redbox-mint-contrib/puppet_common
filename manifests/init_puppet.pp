@@ -18,9 +18,7 @@ class puppet_common::init_puppet (
   # set up ssh config so ssh pull down from repos always ready
   file { "${home_dir}/.ssh_agent":
     ensure  => file,
-    # source => "puppet:///modules/puppet_common/ssh_agent",
     content => template("puppet_common/ssh_agent.erb"),
-  } -> notify { 'reset .ssh_agent': message => "WARNING: You have reset puppet's .ssh_agent config. Update that file with the ssh key needed for remote git repo interaction." 
   } ->
   file_line { 'agent_to_bashrc':
     path  => "${home_dir}/.bashrc",
@@ -28,4 +26,10 @@ class puppet_common::init_puppet (
     match => "^[^#]*.ssh_agent$"
   }
 
-}
+  if ($ssh_key) {
+    notify { 'reset .ssh_agent':
+      message   => "WARNING: You have reset puppet's .ssh_agent config. Update that file with the ssh key needed for remote git repo interaction.",
+      subscribe => File["${home_dir}/.ssh_agent"],
+    }
+  }
+

@@ -26,7 +26,7 @@ class puppet_common::init_puppet (
     match => "^[^#]*.ssh_agent$"
   }
 
-  if ($ssh_key) {
+  if (! $ssh_key) {
     notify { 'reset .ssh_agent':
       message   => "WARNING: You have reset puppet's .ssh_agent config. Update that file with the ssh key needed for remote git repo interaction.",
       subscribe => File["${home_dir}/.ssh_agent"],

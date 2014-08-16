@@ -21,9 +21,14 @@ function check_agent {
    else
       start_agent;
    fi
+   
+}
 
-   # uncomment line below and add ssh private key to use for remote repo ssh interaction
-   #ssh-add ~/.ssh/...
+function add_agent {
+        echo "INFO: ssh identity needs to be added."
+        # uncomment line below and add ssh private key to use for ssh interaction
+        #ssh-add ~/.ssh/... > /dev/null
 }
 
 check_agent
+ssh-add -l > /dev/null || add_agent

@@ -1,4 +1,8 @@
-class puppet_common::init_puppet ($conf_file = "puppet.conf", $home_dir = "/root", $conf_dir = "/etc/puppet",) {
+class puppet_common::init_puppet (
+  $conf_file = "puppet.conf",
+  $home_dir  = "/root",
+  $conf_dir  = "/etc/puppet",
+  $ssh_key   = undef,) {
   # set up puppet configuration file for 'root' user
   puppet_common::add_directory { "hiera_data": parent_directory => $conf_dir, } ->
   file { "${$conf_dir}/${conf_file}":
@@ -13,8 +17,9 @@ class puppet_common::init_puppet ($conf_file = "puppet.conf", $home_dir = "/root
 
   # set up ssh config so ssh pull down from repos always ready
   file { "${home_dir}/.ssh_agent":
-    ensure => file,
-    source => "puppet:///modules/puppet_common/ssh_agent",
+    ensure  => file,
+    # source => "puppet:///modules/puppet_common/ssh_agent",
+    content => template("puppet_common/ssh_agent.erb"),
   } -> notify { 'reset .ssh_agent': message => "WARNING: You have reset puppet's .ssh_agent config. Update that file with the ssh key needed for remote git repo interaction." 
   } ->
   file_line { 'agent_to_bashrc':

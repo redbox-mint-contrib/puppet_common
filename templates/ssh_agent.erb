@@ -1,0 +1,38 @@
+## set up ssh-agent
+SSH_ENV="$HOME/.ssh/environment"
+
+function start_agent {
+    echo "Initialising new SSH agent..."
+    /usr/bin/ssh-agent | sed 's/^echo/#echo/' > "${SSH_ENV}"
+    echo succeeded
+    chmod 600 "${SSH_ENV}"
+    . "${SSH_ENV}" > /dev/null
+    /usr/bin/ssh-add;
+}
+
+# Source SSH settings, if applicable
+
+function check_agent {
+   if [ -f "${SSH_ENV}" ]; then
+      . "${SSH_ENV}" > /dev/null
+      ps -ef | grep ${SSH_AGENT_PID} | grep ssh-agent$ > /dev/null || {
+        start_agent;
+      }
+   else
+      start_agent;
+   fi
+   
+}
+
+function add_agent {
+        echo "INFO: ssh identity needs to be added."
+    <%- if @ssh_key -%>
+		ssh-add ~/.ssh/<%= @ssh_key %> > /dev/null
+	<%- else -%>
+	    # uncomment line below and add ssh private key to use for ssh interaction
+		#ssh-add ~/.ssh/... > /dev/null
+    <%- end -%>    
+}
+
+check_agent
+ssh-add -l > /dev/null || add_agent

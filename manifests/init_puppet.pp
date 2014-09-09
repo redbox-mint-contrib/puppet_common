@@ -7,6 +7,8 @@ class puppet_common::init_puppet (
 
   class { 'puppet_common::init_hiera': }
 
+  puppet_common::add_system_user { 'puppet': }
+
   # set up puppet configuration file for 'root' user
   file { "${puppet_common::variables::puppet::conf_dir}/${puppet_conf_file}":
     ensure  => file,

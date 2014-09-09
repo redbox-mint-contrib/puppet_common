@@ -3,16 +3,14 @@ class puppet_common::init_puppet (
   $home_dir         = "/root",
   $ssh_key          = undef,
   $environment      = undef,) {
-  $this_module_name = 'puppet_common'
+  include 'puppet_common::variables::puppet'
 
-  # class { 'puppet_common::init_hiera': caller_module => $this_module_name, }
+  class { 'puppet_common::init_hiera': }
 
   # set up puppet configuration file for 'root' user
-  class { 'puppet_common::variables::puppet':
-  } ~>
   file { "${puppet_common::variables::puppet::conf_dir}/${puppet_conf_file}":
     ensure  => file,
-    content => template("${this_module_name}/${puppet_conf_file}.erb"),
+    content => template("${module_name}/${puppet_conf_file}.erb"),
   }
 
   # set up ssh config so that ssh pull down from repos is always ready

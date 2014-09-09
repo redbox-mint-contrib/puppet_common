@@ -1,4 +1,4 @@
-class puppet_common::init_hiera ($caller_module = undef,) {
+class puppet_common::init_hiera {
   $hiera_config_name = 'hiera.yaml'
   package { ['ruby-devel', 'gcc']: } ->
   package { ['deep_merge', 'hiera-gpg']:
@@ -10,10 +10,10 @@ class puppet_common::init_hiera ($caller_module = undef,) {
 
   puppet_common::add_directory { $puppet_common::variables::puppet::conf_dir: }
 
-  if ($caller_module) {
+  if ($caller_module_name) {
     file { "${puppet_common::variables::puppet::conf_dir}/${hiera_config_name}":
       ensure    => file,
-      content   => template("${caller_module}/${hiera_config_name}.erb"),
+      content   => template("${caller_module_name}/${hiera_config_name}.erb"),
       subscribe => [Puppet_common::Add_directory[$puppet_common::variables::puppet::conf_dir]],
     }
   }

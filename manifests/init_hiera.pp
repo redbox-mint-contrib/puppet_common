@@ -1,5 +1,8 @@
 class puppet_common::init_hiera {
   $hiera_config_name = 'hiera.yaml'
+
+  Package {
+    allow_virtual => false, }
   package { ['ruby-devel', 'gcc']: } ->
   package { ['deep_merge', 'hiera-gpg']:
     ensure   => 'installed',

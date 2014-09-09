@@ -4,10 +4,7 @@ class puppet_common::init_puppet (
   $ssh_key   = undef,) {
   $this_module_name = 'puppet_common'
 
-  puppet_common::init_hiera { $this_module_name:
-    puppet_conf_dir  => $puppet_conf_dir,
-    this_module_name => $this_module_name,
-  }
+  class { 'puppet_common::init_hiera': caller_module => $this_module_name, }
 
   # set up puppet configuration file for 'root' user
   file { "${$conf_dir}/${conf_file}":

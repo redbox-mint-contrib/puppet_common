@@ -1,4 +1,3 @@
-
 class puppet_common::init_hiera ($caller_module = undef,) {
   $hiera_config_name = 'hiera.yaml'
   package { ['ruby-devel', 'gcc']: } ->

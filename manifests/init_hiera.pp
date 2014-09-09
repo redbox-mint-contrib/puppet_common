@@ -8,10 +8,10 @@ class puppet_common::init_hiera ($caller_module = undef,) {
 
   class { 'puppet_common::variables::puppet':
   } ~>
-  puppet_common::add_directory { $puppet_conf_dir: }
+  puppet_common::add_directory { $puppet_common::variables::puppet::conf_dir: }
 
   if ($caller_module) {
-    file { "${puppet_conf_dir}/${hiera_config_name}":
+    file { "${puppet_common::variables::puppet::conf_dir}/${hiera_config_name}":
       ensure    => file,
       content   => template("${caller_module}/${hiera_config_name}.erb"),
       subscribe => [

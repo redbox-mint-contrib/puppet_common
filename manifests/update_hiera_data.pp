@@ -1,5 +1,6 @@
-define puppet_common::update_hiera ($yaml_name = $title, $caller_module = undef,) {
-  class { 'puppet_common::variables::puppet': }
+define puppet_common::update_hiera_data ($yaml_name = $title, $caller_module = undef,) {
+  class { 'puppet_common::variables::puppet': } ~>
+  puppet_common::add_directory { $hiera_data_dir: }
 
   if ($caller_module) {
     $yaml_names.each |$value| {

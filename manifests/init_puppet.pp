@@ -2,12 +2,13 @@ class puppet_common::init_puppet (
   $puppet_conf_file = "puppet.conf",
   $home_dir         = "/root",
   $ssh_key          = undef,
-  $environment      = undef,) {
+  $environment      = undef,
+  $puppet_user      = 'puppet',) {
   include 'puppet_common::variables::puppet'
 
   class { 'puppet_common::init_hiera': }
 
-  puppet_common::add_system_user { 'puppet': }
+  puppet_common::add_system_user { $puppet_user: }
 
   # set up puppet configuration file for 'root' user
   file { "${puppet_common::variables::puppet::conf_dir}/${puppet_conf_file}":

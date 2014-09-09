@@ -9,8 +9,7 @@ class puppet_common::init_puppet (
   # set up puppet configuration file for 'root' user
   file { "${$conf_dir}/${conf_file}":
     ensure  => file,
-    # source => "puppet:///modules/${this_module_name}/${puppet_conf_file}",
-    content => template("${this_module_name}/${puppet_conf_file}.erb"),
+    content => template("${this_module_name}/${conf_file}.erb"),
   }
 
   # set up ssh config so that ssh pull down from repos is always ready

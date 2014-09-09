@@ -11,13 +11,13 @@
     # The default value is '$confdir/ssl'.
     ssldir = $vardir/ssl
 <%- if @environment -%>
-   	environment = @environment
+   	environment = <%= @environment %>
 <%- end -%>
 
 <%- if @environment == 'master' -%>
-	modulepath = $confdir/environments/$environment/modules
-	manifestdir = $confdir/environments/$environment/manifests
-	manifest = $confdir/environments/$environment/manifests/site.pp
+	environmentpath = $confdir/environments
+	default_manifest = $confdir/<%= @environment %>/manifests
+	basemodulepath = $confdir/<%= @environment %>/modules:/opt/puppet/share/puppet/modules
 [master]
  	## master and agent use SSL to communicate.
     ## if no dns, will need certname - uncomment and complete with correct value

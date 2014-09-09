@@ -1,7 +1,8 @@
 class puppet_common::init_puppet (
   $puppet_conf_file = "puppet.conf",
   $home_dir         = "/root",
-  $ssh_key          = undef,) {
+  $ssh_key          = undef,
+  $environment      = undef,) {
   $this_module_name = 'puppet_common'
 
   # class { 'puppet_common::init_hiera': caller_module => $this_module_name, }

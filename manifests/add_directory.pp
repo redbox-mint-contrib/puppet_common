@@ -19,6 +19,7 @@ define puppet_common::add_directory (
 
   file { "${full_path}":
     ensure => directory,
+    path   => $full_path,
     owner  => $owner,
     group  => $owner,
     mode   => $mode,

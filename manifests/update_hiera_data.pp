@@ -1,8 +1,6 @@
 define puppet_common::update_hiera_data ($yaml_name = $title,) {
   include 'puppet_common::variables::puppet'
 
-  puppet_common::add_directory { $puppet_common::variables::puppet::hiera_data_dir: }
-
   if ($caller_module_name) {
     file { "${puppet_common::variables::puppet::hiera_data_dir}/${yaml_name}":
       ensure    => file,

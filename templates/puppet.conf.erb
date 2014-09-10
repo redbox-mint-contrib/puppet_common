@@ -12,13 +12,14 @@
     ssldir = $vardir/ssl
     confdir = /etc/puppet
 <%- if @environment -%>
-   	environment = <%= @environment %>
+environment = <%= @environment %>
 <%- end -%>
 
+environmentpath = $confdir/environments
+default_manifest = $confdir/<%= @environment %>/manifests
+basemodulepath = $confdir/<%= @environment %>/modules:/opt/puppet/share/puppet/modules
+
 <%- if @environment == 'master' -%>
-	environmentpath = $confdir/environments
-	default_manifest = $confdir/<%= @environment %>/manifests
-	basemodulepath = $confdir/<%= @environment %>/modules:/opt/puppet/share/puppet/modules
 [master]
  	## master and agent use SSL to communicate.
     ## if no dns, will need certname - uncomment and complete with correct value
@@ -38,7 +39,7 @@
     # The default value is '$confdir/localconfig'.
     localconfig = $vardir/localconfig
     
-<%- if @environment == 'agent' -%>
+<%- if @environment != 'master' -%>
     ## An agent needs to know:
     ## - its master (fully qualified domain name)
     ## - its environment (e.g., production, development)

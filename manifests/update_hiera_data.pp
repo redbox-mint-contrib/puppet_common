@@ -1,4 +1,4 @@
-define puppet_common::update_hiera_data ($yaml_name = $title,) {
+define puppet_common::update_hiera_data ($yaml_names = $title,) {
   class { 'puppet_common::variables::puppet': } ~>
   puppet_common::add_directory { $puppet_common::variables::puppet::hiera_data_dir: }
 

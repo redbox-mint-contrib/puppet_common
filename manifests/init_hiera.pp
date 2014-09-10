@@ -1,4 +1,5 @@
 class puppet_common::init_hiera {
+  include 'puppet_common::variables::puppet'
   $hiera_config_name = 'hiera.yaml'
 
   Package {
@@ -8,8 +9,6 @@ class puppet_common::init_hiera {
     ensure   => 'installed',
     provider => 'gem',
   }
-
-  include 'puppet_common::variables::puppet'
 
   puppet_common::add_directory { $puppet_common::variables::puppet::conf_dir: }
 

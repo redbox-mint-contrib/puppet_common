@@ -8,18 +8,17 @@ define puppet_common::add_directory (
   create_parent_directories($full_path)
 
   if ($parent_directory) {
-    file { "${parent_directory} for ${full_path}":
-      path   => $parent_directory,
+    ensure_resource(file, $parent_directory, {
       ensure => directory,
       owner  => $owner,
       group  => $owner,
       mode   => $mode,
     }
+    )
   }
 
-  file { "${full_path}":
+  file { $full_path:
     ensure => directory,
-    path   => $full_path,
     owner  => $owner,
     group  => $owner,
     mode   => $mode,

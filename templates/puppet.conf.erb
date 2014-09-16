@@ -16,8 +16,8 @@ environment = <%= @environment %>
 <%- end -%>
 
 environmentpath = $confdir/environments
-default_manifest = $confdir/<%= @environment %>/manifests
-basemodulepath = $confdir/<%= @environment %>/modules:/opt/puppet/share/puppet/modules
+default_manifest = $confdir/manifests
+basemodulepath = $confdir/modules:/opt/puppet/share/puppet/modules
 
 <%- if @environment == 'master' -%>
 [master]

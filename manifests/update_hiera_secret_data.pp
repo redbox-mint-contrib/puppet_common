@@ -11,7 +11,7 @@ define puppet_common::update_hiera_secret_data ($gpg_name = $title, $source_modu
       ensure    => file,
       source    => $source_module ? {
         undef   => "puppet:///modules/${caller_module_name}/${gpg_name}",
-        default => $source_module,
+        default => "puppet:///modules/${source_module}/${gpg_name}",
       },
       subscribe => [Class['Puppet_common::Variables::Puppet'], Class['Puppet_common::Init_hiera']],
     }

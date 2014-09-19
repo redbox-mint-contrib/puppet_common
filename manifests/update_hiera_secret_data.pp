@@ -1,14 +1,6 @@
 define puppet_common::update_hiera_secret_data ($gpg_name = $title,) {
   include 'puppet_common::variables::puppet'
 
-  Package {
-    allow_virtual => false, }
-
-  package { ['hiera-gpg']:
-    ensure   => 'installed',
-    provider => 'gem',
-  }
-
   $hiera_secret_data_dir = "${hiera_data_dir}/secret"
 
   puppet_common::add_directory { "${caller_module_name}_hiera_secret_data_dir": end_path => 

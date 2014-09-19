@@ -14,6 +14,8 @@ class puppet_common::init_hiera {
 
   puppet_common::add_directory { $puppet_common::variables::puppet::conf_dir: }
 
+  puppet_common::add_directory { $puppet_common::variables::puppet::hiera_data_dir: }
+
   if ($caller_module_name) {
     file { "${puppet_common::variables::puppet::conf_dir}/${hiera_config_name}":
       ensure    => file,

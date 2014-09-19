@@ -6,6 +6,8 @@ class puppet_common::init_puppet (
   $puppet_user      = 'puppet',) {
   include 'puppet_common::variables::puppet'
 
+  host { [$::fqdn]: ip => $::ipaddress, }
+
   class { 'puppet_common::init_hiera': }
 
   # some modules already setup with dedicated 'puppet' user - create this as temp work-around.

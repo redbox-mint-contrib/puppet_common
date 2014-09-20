@@ -13,7 +13,7 @@ class puppet_common::init_hiera {
 
   file { "$puppet_common::variables::puppet::conf_dir/${hiera_config_name}":
     ensure  => file,
-    content => template("${caller_module_name}/${hiera_config_name}.erb"),
+    content => template("puppet_common/${hiera_config_name}.erb"),
   }
 
 }

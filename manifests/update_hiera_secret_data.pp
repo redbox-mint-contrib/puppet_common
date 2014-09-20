@@ -3,7 +3,7 @@ define puppet_common::update_hiera_secret_data ($gpg_name = $title,) {
 
   ensure_resource('file', "$conf_dir/${hiera_config_name}", {
     ensure  => file,
-    content => template("${caller_module_name}/secret/${hiera_config_name}.erb"),
+    content => template("puppet_common/secret/${hiera_config_name}.erb"),
   }
   )
 

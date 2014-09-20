@@ -1,6 +1,5 @@
 define puppet_common::update_hiera_secret_data ($gpg_name = $title, $source_module = undef,) {
-  include 'puppet_common::variables::puppet'
-
+  class { 'puppet_common::variables::puppet': } ->
   puppet_common::add_directory { "${caller_module_name}_hiera_secret_data_dir": end_path => 
     $hiera_secret_data_dir, }
 

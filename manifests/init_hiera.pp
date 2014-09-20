@@ -11,9 +11,10 @@ class puppet_common::init_hiera {
     provider => 'gem',
   }
 
-  file { "$puppet_common::variables::puppet::conf_dir/${hiera_config_name}":
+  file { "${puppet_common::variables::puppet::conf_dir}/${puppet_common::variables::puppet::hiera_config_name}"
+  :
     ensure  => file,
-    content => template("puppet_common/${hiera_config_name}.erb"),
+    content => template("puppet_common/${puppet_common::variables::puppet::hiera_config_name}.erb"),
   }
 
 }

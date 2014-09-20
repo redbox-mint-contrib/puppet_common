@@ -1,5 +1,5 @@
 class puppet_common::init_hiera {
-  include 'puppet_common::variables::puppet'
+  require 'puppet_common::variables::puppet'
 
   Package {
     allow_virtual => false, }

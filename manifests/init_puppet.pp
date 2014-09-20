@@ -14,6 +14,7 @@ class puppet_common::init_puppet (
   puppet_common::add_systemuser { $puppet_user: }
 
   # set up puppet configuration file for 'root' user
+  puppet_common::add_directory { $puppet_common::variables::puppet::conf_dir: } ->
   file { "${puppet_common::variables::puppet::conf_dir}/${puppet_conf_file}":
     ensure  => file,
     content => template("${module_name}/${puppet_conf_file}.erb"),

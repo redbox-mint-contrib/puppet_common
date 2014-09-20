@@ -1,6 +1,5 @@
-class puppet_common::init_hiera ($content = undef,) {
+class puppet_common::init_hiera {
   include 'puppet_common::variables::puppet'
-  $hiera_config_name = 'hiera.yaml'
 
   Package {
     allow_virtual => false, }
@@ -12,22 +11,9 @@ class puppet_common::init_hiera ($content = undef,) {
     provider => 'gem',
   }
 
-  puppet_common::add_directory { $puppet_common::variables::puppet::conf_dir: }
-
-  puppet_common::add_directory { $puppet_common::variables::puppet::hiera_data_dir: }
-
-  if ($caller_module_name) {
-    file { "${puppet_common::variables::puppet::conf_dir}/${hiera_config_name}":
-      ensure    => file,
-      content   => $content ? {
-        undef   => template("${caller_module_name}/${hiera_config_name}.erb"),
-        default => $content,
-      },
-      subscribe => [
-        Puppet_common::Add_directory[$puppet_common::variables::puppet::conf_dir],
-        Class['Puppet_common::Variables::Puppet'],
-        ],
-    }
+  file { "$puppet_common::variables::puppet::conf_dir/${hiera_config_name}":
+    ensure  => file,
+    content => template("${caller_module_name}/${hiera_config_name}.erb"),
   }
 
 }

@@ -1,9 +1,11 @@
-class puppet_common::ntp_update ($include_file = '/etc/ntp.conf',) {
+class puppet_common::ntp_update (
+  $include_file  = '/etc/ntp.conf',
+  $timezone_path = 'usr/share/zoneinfo/Australia/Queensland',) {
   Package {
     allow_virtual => false, } ->
   file { '/etc/localtime':
     ensure => file,
-    source => 'file:////usr/share/zoneinfo/Australia/Queensland',
+    source => "file:////${timezone_path}",
     notify => Package['ntp'],
   }
   package { ['augeas-libs', 'augeas-devel', 'ntp']: } ->
@@ -16,10 +18,7 @@ class puppet_common::ntp_update ($include_file = '/etc/ntp.conf',) {
     lens    => 'Ntp.lns',
     changes => [
       "ins tinker before /files/home/ec2-user/ntp.conf/#comment[01]",
-      "set dict/entry[. = 'rapidAafSso']/dict/entry[. = 'url']/string \"${system_config[rapidAafSso]
-        [url]}\"",
-      "set dict/entry[. = 'rapidAafSso']/dict/entry[. = 'sharedKey']/string \"${system_config[
-          rapidAafSso][sharedKey]}\""],
+      "set /files/home/ec2-user/ntp.conf/tinker/panic 0"],
     require => [Package['ntp'], Service['ntpd']],
   }
 

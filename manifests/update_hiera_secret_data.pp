@@ -12,9 +12,9 @@ define puppet_common::update_hiera_secret_data ($gpg_name = $title,) {
   ensure_resource('puppet_common::add_directory', 
   "${puppet_common::variables::puppet::hiera_secret_data_dir}")
 
-  file { "${puppet_common::variables::puppet::hiera_secret_data_dir}/${gpg_name}":
+  file { "${puppet_common::variables::puppet::hiera_secret_data_dir}/${gpg_name}.gpg":
     ensure    => file,
-    source    => "puppet:///modules/${caller_module_name}/${gpg_name}",
+    source    => "puppet:///modules/${caller_module_name}/${gpg_name}.gpg",
     subscribe => Puppet_common::Add_directory[
       "${puppet_common::variables::puppet::hiera_secret_data_dir}"],
   }

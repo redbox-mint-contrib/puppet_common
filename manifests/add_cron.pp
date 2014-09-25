@@ -1,5 +1,5 @@
 define puppet_common::add_cron ($crontab = $title,) {
-  $cron_hash.each |$key, $value| {
+  $crontab.each |$key, $value| {
     cron { $key:
       command => $value[command],
       user    => $value[user],

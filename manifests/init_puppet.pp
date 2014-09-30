@@ -1,9 +1,10 @@
 class puppet_common::init_puppet (
-  $puppet_conf_file = "puppet.conf",
-  $home_dir         = "/root",
-  $ssh_key          = undef,
-  $environment      = undef,
-  $puppet_user      = 'puppet',) {
+  $puppet_conf_file           = "puppet.conf",
+  $home_dir                   = "/root",
+  $ssh_key                    = undef,
+  $environment                = undef,
+  $has_directory_environments = true,
+  $puppet_user                = 'puppet',) {
   include 'puppet_common::variables::puppet'
 
   host { [$::fqdn]: ip => $::ipaddress, }

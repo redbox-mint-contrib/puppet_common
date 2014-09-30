@@ -17,7 +17,7 @@ define puppet_common::update_hiera_data (
       ],
   }
 
-  if ($environment) {
+  if ($environment_name) {
     file_line { 'set puppet.conf environment':
       path  => "${puppet_common::variables::puppet::conf_dir}/${puppet_common::variables::puppet::hiera_config_name}",
       line  => "environment=${environment_name}",

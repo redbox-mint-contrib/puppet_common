@@ -5,9 +5,9 @@ class puppet_common::init_puppet (
   $environment                = undef,
   $has_directory_environments = true,
   $puppet_user                = 'puppet',) {
-  include 'puppet_common::variables::puppet'
-
   host { [$::fqdn]: ip => $::ipaddress, }
+
+  class { 'puppet_common::ntp_update': }
 
   class { 'puppet_common::init_hiera': }
 
@@ -15,8 +15,8 @@ class puppet_common::init_puppet (
   puppet_common::add_systemuser { $puppet_user: }
 
   # set up puppet configuration file for 'root' user
-  puppet_common::add_directory { $puppet_common::variables::puppet::conf_dir: } ->
-  file { "${puppet_common::variables::puppet::conf_dir}/${puppet_conf_file}":
+  puppet_common::add_directory { $::settings::confdir: } ->
+  file { $::settings::config:
     ensure  => file,
     content => template("${module_name}/${puppet_conf_file}.erb"),
   }

@@ -1,20 +1,18 @@
 class puppet_common::init_hiera {
-  require 'puppet_common::variables::puppet'
-
   Package {
     allow_virtual => false, }
 
   package { ['ruby-devel', 'gcc']: }
 
-  package { ['deep_merge', 'hiera-gpg']:
+  package { 'deep_merge':
     ensure   => 'installed',
     provider => 'gem',
   }
 
-  file { "${puppet_common::variables::puppet::conf_dir}/${puppet_common::variables::puppet::hiera_config_name}"
-  :
+  file { "init_${::settings::hiera_config}":
+    path    => $::settings::hiera_config,
     ensure  => file,
-    content => template("puppet_common/${puppet_common::variables::puppet::hiera_config_name}.erb"),
+    content => template("puppet_common/${::settings::hiera_config}.erb"),
   }
 
 }

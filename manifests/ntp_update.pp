@@ -17,7 +17,7 @@ class puppet_common::ntp_update (
   augeas { $include_file:
     incl    => $include_file,
     lens    => 'Ntp.lns',
-    changes => ["ins tinker before #comment[01]", "set tinker/panic 0"],
+    changes => ["ins tinker/panic before #comment[01]", "set tinker/panic 0"],
     require => [Package['ntp'], Service['ntpd']],
   }
 

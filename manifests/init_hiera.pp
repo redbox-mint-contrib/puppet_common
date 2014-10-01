@@ -12,7 +12,7 @@ class puppet_common::init_hiera {
   file { "init_${::settings::hiera_config}":
     path    => $::settings::hiera_config,
     ensure  => file,
-    content => template("puppet_common/${::settings::hiera_config}.erb"),
+    content => template("puppet_common/hiera.yaml.erb"),
   }
 
 }

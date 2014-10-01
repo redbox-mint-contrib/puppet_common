@@ -12,7 +12,7 @@ define puppet_common::update_hiera_secret_data (
     ensure_resource('file', "secret_${::settings::hiera_config}", {
       ensure  => file,
       path    => $::settings::hiera_config,
-      content => template("puppet_common/secret/${::settings::hiera_config}.erb"),
+      content => template('puppet_common/secret/hiera.yaml.erb'),
     }
     )
 

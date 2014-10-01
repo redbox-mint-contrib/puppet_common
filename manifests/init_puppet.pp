@@ -1,10 +1,8 @@
 class puppet_common::init_puppet (
-  $puppet_conf_file           = "puppet.conf",
   $home_dir                   = "/root",
   $ssh_key                    = undef,
   $environment                = undef,
-  $has_directory_environments = true,
-  $puppet_user                = 'puppet',) {
+  $has_directory_environments = true,) {
   host { [$::fqdn]: ip => $::ipaddress, }
 
   class { 'puppet_common::ntp_update': }
@@ -18,7 +16,7 @@ class puppet_common::init_puppet (
   puppet_common::add_directory { $::settings::confdir: } ->
   file { $::settings::config:
     ensure  => file,
-    content => template("${module_name}/${puppet_conf_file}.erb"),
+    content => template("${module_name}/${::settings::config_file_name}.erb"),
   }
 
   # set up ssh config so that ssh pull down from repos is always ready

@@ -1,8 +1,6 @@
 define puppet_common::update_hiera_secret_data (
   $gpg_name              = $title,
   $hiera_secret_data_dir = "${::settings::confdir}/hiera_data/secret") {
-  contain puppet_common::update_hiera_data
-
   if (module_component_exists($caller_module_name, "files/${gpg_name}.gpg")) {
     ensure_resource('package', 'hiera-gpg', {
       ensure   => 'installed',

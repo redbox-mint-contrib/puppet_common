@@ -2,7 +2,8 @@ class puppet_common::ntp_update (
   $include_file  = '/etc/ntp.conf',
   $timezone_path = 'usr/share/zoneinfo/Australia/Queensland',) {
   Package {
-    allow_virtual => false, } ->
+    allow_virtual => false, }
+
   file { '/etc/localtime':
     ensure => file,
     source => "file:////${timezone_path}",

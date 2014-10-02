@@ -5,9 +5,17 @@ class puppet_common::init_puppet (
   $has_directory_environments = true,) {
   host { [$::fqdn]: ip => $::ipaddress, }
 
-  class { 'puppet_common::ntp_update': }
+  exec { 'link_ruby_puppet_binary':
+    command   => 'ln -s `which puppet` /usr/bin/puppet',
+    creates   => '/usr/bin/puppet',
+    logoutput => true,
+  }
 
-  class { 'puppet_common::init_hiera': }
+  class { 'puppet_common::ntp_update':
+  }
+
+  class { 'puppet_common::init_hiera':
+  }
 
   # some modules already setup with dedicated 'puppet' user - create this as temp work-around.
   puppet_common::add_systemuser { $puppet_user: }

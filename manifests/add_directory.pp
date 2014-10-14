@@ -17,10 +17,11 @@ define puppet_common::add_directory (
     )
   }
 
-  file { $full_path:
+  ensure_resource(file, $full_path, {
     ensure => directory,
     owner  => $owner,
     group  => $owner,
     mode   => $mode,
   }
+  )
 }

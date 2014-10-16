@@ -1,10 +1,9 @@
 define puppet_common::add_yum_repo ($repo = $title, $exec_path = undef,) {
-  if ($exec_path) {
-    Exec {
-      path      => $exec_path,
-      logoutput => false,
-    }
+  Exec {
+    path      => $exec_path,
+    logoutput => false,
   }
+
   yumrepo { $repo[name]:
     descr    => $repo[descr],
     baseurl  => $repo[baseurl],

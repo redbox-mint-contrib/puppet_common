@@ -13,7 +13,13 @@ class puppet_common::init_puppet (
   puppet_common::add_systemuser { $puppet_user: }
 
   # set up puppet configuration file for 'root' user
-  puppet_common::add_directory { $::settings::confdir: } ->
+  file { 'puppetize config dir':
+    path    => $::settings::confdir,
+    ensure  => directory,
+    owner   => 'puppet',
+    group   => 'puppet',
+    recurse => true,
+  } ->
   file { $::settings::config:
     ensure  => file,
     content => template("${module_name}/${::settings::config_file_name}.erb"),

@@ -45,5 +45,5 @@ basemodulepath = $confdir/modules:/opt/puppet/share/puppet/modules
     ## - its master (fully qualified domain name)
     ## - its environment (e.g., production, development)
     ## uncomment these lines and replace the values according to requirements
-    # server = puppetmaster.localdomain
+    # server = <%= @puppet_master -%>
 <%- end -%>

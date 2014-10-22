@@ -3,7 +3,8 @@ class puppet_common::init_puppet (
   $ssh_key                    = undef,
   $environment                = undef,
   $has_directory_environments = true,
-  $puppet_user                = 'puppet',) {
+  $puppet_user                = 'puppet',
+  $puppet_master              = undef,) {
   host { [$::fqdn]: ip => $::ipaddress, }
 
   class { 'puppet_common::ntp_update': }

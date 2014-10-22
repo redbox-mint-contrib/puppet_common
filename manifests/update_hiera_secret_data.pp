@@ -9,13 +9,6 @@ define puppet_common::update_hiera_secret_data (
     }
     )
 
-    ensure_resource('file', "secret_${::settings::hiera_config}", {
-      ensure  => file,
-      path    => $::settings::hiera_config,
-      content => template('puppet_common/secret/hiera.yaml.erb'),
-    }
-    )
-
     ensure_resource('puppet_common::add_directory', $hiera_secret_data_dir)
 
     file { "${hiera_secret_data_dir}/${gpg_name}.gpg":

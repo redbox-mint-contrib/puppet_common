@@ -24,7 +24,7 @@ define puppet_common::update_hiera_secret_data (
       subscribe => Puppet_common::Add_directory[$hiera_secret_data_dir],
     }
   } else {
-    notify { 'No gpg configuration available for ${gpg_name} in ${caller_module_name} - existing hiera config remains.'
+    notify { "No gpg configuration available for ${gpg_name} in ${caller_module_name} - existing hiera config remains."
     : }
   }
 }

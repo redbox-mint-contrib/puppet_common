@@ -9,6 +9,8 @@ class puppet_common::init_puppet (
 
   class { 'puppet_common::ntp_update': }
 
+  class { 'puppet_common::init_hiera': }
+
   # some modules already setup with dedicated 'puppet' user - create this as temp work-around.
   puppet_common::add_systemuser { $puppet_user: } ->
   # set up puppet configuration file for 'root' user

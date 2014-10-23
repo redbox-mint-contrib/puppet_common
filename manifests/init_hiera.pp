@@ -1,8 +1,6 @@
-class puppet_common::init_hiera (
-  $template_name         = 'hiera.yaml',
-  $gpg_name              = undef,
-  $hiera_data_dir        = "${::settings::confdir}/hiera_data",
-  $hiera_secret_data_dir = "${::settings::confdir}/hiera_data/secret",) {
+class puppet_common::init_hiera ($template_name = 'hiera.yaml', $has_secrets = true) {
+  require 'puppet_common::variables::puppet'
+
   Package {
     allow_virtual => false, }
 
@@ -13,7 +11,7 @@ class puppet_common::init_hiera (
     provider => 'gem',
   }
 
-  if ($gpg_name and module_component_exists($caller_module_name, "files/${gpg_name}.gpg")) {
+  if (has_secrets) {
     file { "secret_${::settings::hiera_config}":
       ensure  => file,
       path    => $::settings::hiera_config,

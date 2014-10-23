@@ -1,4 +1,8 @@
-class puppet_common::init_hiera ($template_name = 'hiera.yaml', $gpg_name = undef,) {
+class puppet_common::init_hiera (
+  $template_name         = 'hiera.yaml',
+  $gpg_name              = undef,
+  $hiera_data_dir        = "${::settings::confdir}/hiera_data",
+  $hiera_secret_data_dir = "${::settings::confdir}/hiera_data/secret",) {
   Package {
     allow_virtual => false, }
 

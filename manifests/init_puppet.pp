@@ -5,6 +5,8 @@ class puppet_common::init_puppet (
   $has_directory_environments = true,
   $puppet_user                = 'puppet',
   $puppet_master              = undef,) {
+  require 'puppet_common::variables::puppet'
+
   host { [$::fqdn]: ip => $::ipaddress, }
 
   class { 'puppet_common::ntp_update': }

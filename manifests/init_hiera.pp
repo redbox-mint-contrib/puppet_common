@@ -1,6 +1,4 @@
 class puppet_common::init_hiera ($template_name = 'hiera.yaml', $has_secrets = true) {
-  require 'puppet_common::variables::puppet'
-
   Package {
     allow_virtual => false, }
 

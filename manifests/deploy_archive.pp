@@ -26,9 +26,10 @@ define puppet_common::deploy_archive (
   $archive_name      = $title,
   $owner             = undef,
   $working_directory = undef,
-  $archive_source    = undef,) {
-  if (!$archive_source) {
-    $archive_source = $archive_name
+  $module_source     = undef,) {
+  $archive_source = $module_source ? {
+    undef   => $archive_name,
+    default => $module_source,
   }
 
   file { "${working_directory}/${archive_name}.tgz":

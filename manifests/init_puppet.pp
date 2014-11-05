@@ -19,13 +19,21 @@ class puppet_common::init_puppet (
   file { 'puppetize config dir':
     path    => $::settings::confdir,
     ensure  => directory,
-    owner   => 'puppet',
+    owner   => $puppet_user,
     recurse => true,
   } ->
   file { $::settings::config:
     ensure  => file,
     content => template("${module_name}/${::settings::config_file_name}.erb"),
-  }
+    owner   => $puppet_user,
+  } ->
+  file { "${::settings::confdir}/gpg":
+    ensure  => directory,
+    owner   => $puppet_user,
+    recurse => true,
+  } ->
+  notify { "Gpg directory has been created. Ensure you import or create keys with '--homedir' set to ${::settings::confdir}/gpg"
+  : }
 
   # set up ssh config so that ssh pull down from repos is always ready
   file { "${home_dir}/.ssh_agent":

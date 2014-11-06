@@ -13,9 +13,7 @@
     confdir = /etc/puppet
 <%- if @environment -%>
 environment = <%= @environment %>
-	<%- if @has_directory_environments -%>
 environmentpath = $confdir/environments
-	<%- end -%>
 <%- end -%>
 default_manifest = $confdir/manifests
 basemodulepath = $confdir/modules:/opt/puppet/share/puppet/modules

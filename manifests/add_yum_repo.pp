@@ -11,7 +11,7 @@ define puppet_common::add_yum_repo ($repo = $title, $exec_path = undef,) {
     enabled  => $repo[enabled],
   } ~>
   exec { "${title} yum clean all": 
-    command => "yum clean all",
+    command => "/usr/bin/yum clean all",
     refreshonly => true, 
   }
 

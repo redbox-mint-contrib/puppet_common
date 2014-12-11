@@ -26,18 +26,19 @@ define puppet_common::deploy_archive (
   $archive_name      = $title,
   $owner             = undef,
   $working_directory = undef,
-  $module_source     = undef,) {
+  $module_source     = undef,
+  $archive_extension = '.tgz',) {
   $archive_source = $module_source ? {
     undef   => $archive_name,
     default => $module_source,
   }
 
-  file { "${working_directory}/${archive_name}.tgz":
+  file { "${working_directory}/${archive_name}${archive_extension}":
     owner  => $owner,
-    source => "puppet:///modules/${archive_source}/${archive_name}.tgz",
+    source => "puppet:///modules/${archive_source}/${archive_name}${archive_extension}",
   } ~>
   exec { "unpack archive ${archive_name}":
-    command => "tar -xvzf ${working_directory}/${archive_name}.tgz",
+    command => "tar -xvzf ${working_directory}/${archive_name}${archive_extension}",
     creates => "${working_directory}/${archive_name}",
     cwd     => $working_directory,
     user    => $owner,

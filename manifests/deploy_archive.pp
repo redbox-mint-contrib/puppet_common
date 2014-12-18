@@ -27,7 +27,8 @@ define puppet_common::deploy_archive (
   $owner             = undef,
   $working_directory = undef,
   $module_source     = undef,
-  $archive_extension = '.tgz',) {
+  $archive_extension = '.tgz',
+  $unpack_owner      = undef,) {
   $archive_source = $module_source ? {
     undef   => $archive_name,
     default => $module_source,
@@ -41,6 +42,9 @@ define puppet_common::deploy_archive (
     command => "tar -xvzf ${working_directory}/${archive_name}${archive_extension}",
     creates => "${working_directory}/${archive_name}",
     cwd     => $working_directory,
-    user    => $owner,
+    user    => $unpack_owner ? {
+      undef   => $owner,
+      default => $unpack_owner,
+    }
   }
 }

@@ -37,6 +37,7 @@ define puppet_common::deploy_archive (
   file { "${working_directory}/${archive_name}${archive_extension}":
     owner  => $owner,
     source => "puppet:///modules/${archive_source}/${archive_name}${archive_extension}",
+    mode   => 0744,
   } ~>
   exec { "unpack archive ${archive_name}":
     command => "tar -xvzf ${working_directory}/${archive_name}${archive_extension}",

@@ -5,9 +5,9 @@ define puppet_common::add_directory (
   $mode             = '0750') {
   $full_path = "${parent_directory}/${end_path}"
 
-  create_parent_directories($full_path)
-
   if ($parent_directory) {
+    create_parent_directories($full_path)
+
     ensure_resource(file, $parent_directory, {
       ensure => directory,
       owner  => $owner,

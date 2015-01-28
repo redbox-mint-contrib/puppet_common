@@ -28,7 +28,8 @@ define puppet_common::deploy_archive (
   $working_directory = undef,
   $module_source     = undef,
   $archive_extension = '.tar.gz',
-  $unpack_owner      = undef,) {
+  $unpack_owner      = undef,
+  $mode              = '0750') {
   $archive_source = $module_source ? {
     undef   => $archive_name,
     default => $module_source,
@@ -47,11 +48,14 @@ define puppet_common::deploy_archive (
       undef   => $owner,
       default => $unpack_owner,
     }
-  } ->
-  file { "${working_directory}/${archive_name}":
+  }
+  ensure_resource('file', "${working_directory}/${archive_name}", {
     ensure  => directory,
     recurse => true,
     owner   => $owner,
+    group   => $owner,
+    require => Exec["unpack archive ${archive_name}"],
   }
+  )
 
 }

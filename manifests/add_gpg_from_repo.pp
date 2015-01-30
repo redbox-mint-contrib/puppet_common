@@ -2,7 +2,7 @@ define puppet_common::add_gpg_from_repo (
   $key_name     = hiera_hash('gpg_key::name', $title),
   $source       = hiera_hash('gpg_key::source', undef),
   $path         = hiera_hash('gpg_key::path', undef),
-  $gpg_home_dir = hiera_hash('gpg::home_dir', "${::settings::confdir}/gpg",) {
+  $gpg_home_dir = hiera_hash('gpg::home_dir', "${::settings::confdir}/gpg"),) {
   ensure(file, $gpg_home_dir, {
     ensure  => directory,
     owner   => $puppet_user,

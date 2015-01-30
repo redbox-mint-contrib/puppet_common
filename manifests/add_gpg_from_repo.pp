@@ -5,28 +5,27 @@ define puppet_common::add_gpg_from_repo (
   $gpg_home_dir = hiera_hash('gpg::home_dir', "${::settings::confdir}/gpg"),) {
   ensure_resource(file, $gpg_home_dir, {
     ensure  => directory,
-    owner   => $puppet_user,
+    owner   => 'puppet',
     recurse => true,
   }
   )
 
-  vcsrepo { $gpg_source[path]:
+  vcsrepo { $path:
     ensure   => present,
     provider => git,
-    source   => $gpg_source[source],
+    source   => $source,
   } ->
-  exec { "add gpg ${gpg_key[name]}":
-    command => "gpg --homedir=${gpg_home_dir} --allow-secret-key-import --import ${gpg_key[path]}/gpg-keys/${gpg_key
-      [name]}",
+  exec { "add gpg ${key_name}":
+    command => "gpg --homedir=${gpg_home_dir} --allow-secret-key-import --import ${key_name}/gpg-keys/${key_name}",
     require => File[$gpg_home_dir],
     cwd     => $gpg_home_dir,
   }
 
-  ensure(file, "remove gpg key repo:${gpg_key[path]}", {
-    path    => $gpg_key[path],
+  ensure(file, "remove gpg key repo:${path}", {
+    path    => $key_name,
     ensure  => absent,
     force   => true,
-    require => Exec["add gpg ${gpg_key[name]}"],
+    require => Exec["add gpg ${key_name}"],
   }
   )
 }

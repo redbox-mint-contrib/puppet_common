@@ -22,7 +22,7 @@ define puppet_common::add_gpg_from_repo (
   }
 
   ensure_resource(file, "remove gpg key repo:${path}", {
-    path    => $key_name,
+    path    => $path,
     ensure  => absent,
     force   => true,
     require => Exec["add gpg ${key_name}"],

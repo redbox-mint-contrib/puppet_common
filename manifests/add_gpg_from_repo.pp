@@ -21,7 +21,7 @@ define puppet_common::add_gpg_from_repo (
     cwd     => $gpg_home_dir,
   }
 
-  ensure(file, "remove gpg key repo:${path}", {
+  ensure_resource(file, "remove gpg key repo:${path}", {
     path    => $key_name,
     ensure  => absent,
     force   => true,

@@ -16,7 +16,7 @@ define puppet_common::add_gpg_from_repo (
     source   => $source,
   } ->
   exec { "add gpg ${key_name}":
-    command => "gpg --homedir=${gpg_home_dir} --allow-secret-key-import --import ${key_name}/gpg-keys/${key_name}",
+    command => "/usr/bin/gpg --homedir=${gpg_home_dir} --allow-secret-key-import --import ${key_name}/gpg-keys/${key_name}",
     require => File[$gpg_home_dir],
     cwd     => $gpg_home_dir,
   }

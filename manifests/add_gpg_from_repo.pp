@@ -3,12 +3,11 @@ define puppet_common::add_gpg_from_repo (
   $source       = hiera_hash('gpg_key::source', undef),
   $path         = hiera_hash('gpg_key::path', undef),
   $gpg_home_dir = hiera_hash('gpg::home_dir', "${::settings::confdir}/gpg"),) {
-  ensure_resource(file, $gpg_home_dir, {
+  file { $gpg_home_dir:
     ensure  => directory,
     owner   => 'puppet',
     recurse => true,
   }
-  )
 
   vcsrepo { $path:
     ensure   => present,

@@ -5,7 +5,6 @@ define puppet_common::add_gpg_from_repo (
   $gpg_home_dir = "${::settings::confdir}/gpg") {
   file { $gpg_home_dir:
     ensure  => directory,
-    owner   => 'puppet',
     recurse => true,
   }
 

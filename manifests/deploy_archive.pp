@@ -29,7 +29,8 @@ define puppet_common::deploy_archive (
   $module_source     = undef,
   $archive_extension = '.tar.gz',
   $unpack_owner      = undef,
-  $mode              = '0750') {
+  $mode              = '0750',
+  $is_overwrite      = false,) {
   $archive_source = $module_source ? {
     undef   => $archive_name,
     default => $module_source,
@@ -39,16 +40,30 @@ define puppet_common::deploy_archive (
     owner  => $owner,
     source => "puppet:///modules/${archive_source}/${archive_name}${archive_extension}",
     mode   => 0744,
-  } ~>
-  exec { "unpack archive ${archive_name}":
-    command => "tar -xvzf ${working_directory}/${archive_name}${archive_extension}",
-    creates => "${working_directory}/${archive_name}",
-    cwd     => $working_directory,
-    user    => $unpack_owner ? {
-      undef   => $owner,
-      default => $unpack_owner,
+    notify => Exec["unpack archive ${archive_name}"],
+  }
+
+  if ($is_overwrite) {
+    exec { "unpack archive ${archive_name}":
+      command => "tar -xvzf ${working_directory}/${archive_name}${archive_extension}",
+      cwd     => $working_directory,
+      user    => $unpack_owner ? {
+        undef   => $owner,
+        default => $unpack_owner,
+      }
+    }
+  } else {
+    exec { "unpack archive ${archive_name}":
+      command => "tar -xvzf ${working_directory}/${archive_name}${archive_extension}",
+      creates => "${working_directory}/${archive_name}",
+      cwd     => $working_directory,
+      user    => $unpack_owner ? {
+        undef   => $owner,
+        default => $unpack_owner,
+      }
     }
   }
+
   ensure_resource('file', "${working_directory}/${archive_name}", {
     ensure  => directory,
     recurse => true,

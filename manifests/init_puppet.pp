@@ -34,6 +34,12 @@ class puppet_common::init_puppet (
   notify { "Gpg directory has been created. Ensure you import or create keys with '--homedir' set to ${::settings::confdir}/gpg"
   : }
 
+  ensure_packages('hiera-gpg', {
+    ensure   => 'installed',
+    provider => 'gem',
+  }
+  )
+
   # set up ssh config so that ssh pull down from repos is always ready
   file { "${home_dir}/.ssh_agent":
     ensure  => file,

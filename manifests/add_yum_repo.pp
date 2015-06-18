@@ -11,13 +11,12 @@ define puppet_common::add_yum_repo (
     path      => $exec_path,
     logoutput => false,
   }
-  ensure_packages('yum-priorities')
+
   yumrepo { $repo[name]:
     descr    => $repo[descr],
     baseurl  => $repo[baseurl],
     gpgcheck => $repo[gpgcheck],
     enabled  => $repo[enabled],
-    require  => Package['yum-priorities'],
   } ~>
   exec { "${title} yum clean all":
     command     => "yum clean all",

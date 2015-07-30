@@ -10,10 +10,7 @@ class puppet_common::ntp_update (
     notify => Package['ntp'],
   }
   package { ['augeas-libs', 'augeas-devel', 'ntp']: } ->
-  package { ['ruby-augeas']:
-    ensure   => installed,
-    provider => gem,
-  } ->
+  package { ['ruby-augeas']: ensure => installed, } ->
   augeas { $include_file:
     incl    => $include_file,
     lens    => 'Ntp.lns',

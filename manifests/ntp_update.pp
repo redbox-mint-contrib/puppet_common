@@ -1,22 +1,63 @@
 class puppet_common::ntp_update (
   $include_file  = '/etc/ntp.conf',
-  $timezone_path = 'usr/share/zoneinfo/Australia/Queensland',) {
+  $timezone_path = '/usr/share/zoneinfo/Australia/Queensland',) {
   Package {
     allow_virtual => false, }
 
+  case $::osfamily {
+    default  : {
+      fail("unsupported platform ${::osfamily}")
+    }
+    'RedHat' : {
+      case $::operatingsystem {
+        default            : {
+          fail("unsupported os ${::operatingsystem}")
+        }
+        'RedHat', 'CentOS' : {
+          package { ['augeas-libs', 'augeas-devel']: before => Augeas[$include_file] }
+          $local_timezone_path = $timezone_path
+          $ntp_service_name = 'ntpd'
+        }
+      }
+    }
+    'Debian' : {
+      case $::lsbdistcodename {
+        default  : {
+          fail("unsupported release ${::lsbdistcodename}")
+        }
+        'raring' : {
+          package { ['libaugeas-ruby', 'libaugeas-dev']: before => Augeas[$include_file] }
+          $ntp_service_name = 'ntp'
+          $local_timezone_path = '/usr/share/zoneinfo/Australia/Brisbane'
+
+          package { ['ruby-augeas']:
+            ensure   => installed,
+            provider => gem,
+            before   => Augeas[$include_file],
+          }
+        }
+      }
+    }
+  }
+
   file { '/etc/localtime':
     ensure => file,
-    source => "file:////${timezone_path}",
+    source => "file://${local_timezone_path}",
     notify => Package['ntp'],
   }
-  package { ['augeas-libs', 'augeas-devel', 'ntp']: } ->
-  package { ['ruby-augeas']: ensure => installed, } ->
+
+  package { 'ntp': }
+
   augeas { $include_file:
     incl    => $include_file,
     lens    => 'Ntp.lns',
     changes => ["ins tinker before #comment[01]", "set tinker/panic 0"],
-    require => [Package['ntp'], Service['ntpd']],
+    require => Package['ntp'],
+    notify  => Service[$ntp_service_name],
   }
 
-  service { 'ntpd': ensure => running, }
+  service { $ntp_service_name:
+    ensure  => running,
+    require => Package['ntp']
+  }
 }

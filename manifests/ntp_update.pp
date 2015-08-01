@@ -21,21 +21,12 @@ class puppet_common::ntp_update (
       }
     }
     'Debian' : {
-      case $::lsbdistcodename {
-        default  : {
-          fail("unsupported release ${::lsbdistcodename}")
-        }
-        'raring' : {
-          package { ['libaugeas-ruby', 'libaugeas-dev']: before => Augeas[$include_file] }
-          $ntp_service_name = 'ntp'
-          $local_timezone_path = '/usr/share/zoneinfo/Australia/Brisbane'
+      package { ['libaugeas-ruby', 'libaugeas-dev']: before => Augeas[$include_file] }
+      $ntp_service_name = 'ntp'
 
-          package { ['ruby-augeas']:
-            ensure   => installed,
-            provider => gem,
-            before   => Augeas[$include_file],
-          }
-        }
+      case $::lsbdistcodename {
+        default  : { $local_timezone_path = $timezone_path }
+        'raring' : { $local_timezone_path = '/usr/share/zoneinfo/Australia/Brisbane' }
       }
     }
   }

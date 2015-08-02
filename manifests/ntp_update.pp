@@ -25,8 +25,8 @@ class puppet_common::ntp_update (
       $ntp_service_name = 'ntp'
 
       case $::lsbdistcodename {
-        default  : { $local_timezone_path = $timezone_path }
-        'raring' : { $local_timezone_path = '/usr/share/zoneinfo/Australia/Brisbane' }
+        default            : { $local_timezone_path = $timezone_path }
+        'raring', 'trusty' : { $local_timezone_path = '/usr/share/zoneinfo/Australia/Brisbane' }
       }
     }
   }

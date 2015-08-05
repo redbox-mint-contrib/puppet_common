@@ -38,10 +38,9 @@ basemodulepath = $confdir/modules:/opt/puppet/share/puppet/modules
     # The default value is '$confdir/localconfig'.
     localconfig = $vardir/localconfig
     
-<%- if @environment != 'master' -%>
     ## An agent needs to know:
     ## - its master (fully qualified domain name)
     ## - its environment (e.g., production, development)
-    ## uncomment these lines and replace the values according to requirements
-    # server = <%= @puppet_master -%>
+<%- if @puppet_master -%>
+    server = <%= @puppet_master -%>
 <%- end -%>

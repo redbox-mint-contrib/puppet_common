@@ -23,24 +23,27 @@
 #
 
 define puppet_common::deploy_archive (
-  $archive_name      = $title,
-  $owner             = undef,
-  $working_directory = undef,
-  $module_source     = undef,
-  $archive_extension = '.tar.gz',
-  $unpack_owner      = undef,
-  $mode              = '0750',
-  $is_overwrite      = false,) {
-  $archive_source = $module_source ? {
-    undef   => $archive_name,
-    default => $module_source,
-  }
+  $archive_name       = $title,
+  $owner              = undef,
+  $working_directory  = undef,
+  $module_source      = undef,
+  $archive_extension  = '.tar.gz',
+  $unpack_owner       = undef,
+  $mode               = '0750',
+  $is_overwrite       = false,
+  $is_internal_source = true,) {
+  if ($is_internal_source) {
+    $archive_source = $module_source ? {
+      undef   => $archive_name,
+      default => $module_source,
+    }
 
-  file { "${working_directory}/${archive_name}${archive_extension}":
-    owner  => $owner,
-    source => "puppet:///modules/${archive_source}/${archive_name}${archive_extension}",
-    mode   => 0744,
-    notify => Exec["unpack archive ${archive_name}"],
+    file { "${working_directory}/${archive_name}${archive_extension}":
+      owner  => $owner,
+      source => "puppet:///modules/${archive_source}/${archive_name}${archive_extension}",
+      mode   => 0744,
+      notify => Exec["unpack archive ${archive_name}"],
+    }
   }
 
   if ($is_overwrite) {

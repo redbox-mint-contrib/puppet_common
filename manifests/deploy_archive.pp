@@ -23,15 +23,16 @@
 #
 
 define puppet_common::deploy_archive (
-  $archive_name       = $title,
-  $owner              = undef,
-  $working_directory  = undef,
-  $module_source      = undef,
-  $archive_extension  = '.tar.gz',
-  $unpack_owner       = undef,
-  $mode               = '0750',
-  $is_overwrite       = false,
-  $is_internal_source = true,) {
+  $archive_name          = $title,
+  $owner                 = undef,
+  $working_directory     = undef,
+  $module_source         = undef,
+  $archive_extension     = '.tar.gz',
+  $unpack_owner          = undef,
+  $mode                  = '0750',
+  $is_overwrite          = false,
+  $is_internal_source    = true,
+  $unpacked_archive_name = undef,) {
   if ($is_internal_source) {
     $archive_source = $module_source ? {
       undef   => $archive_name,
@@ -67,13 +68,24 @@ define puppet_common::deploy_archive (
     }
   }
 
-  ensure_resource('file', "${working_directory}/${archive_name}", {
-    ensure  => directory,
-    recurse => true,
-    owner   => $owner,
-    group   => $owner,
-    require => Exec["unpack archive ${archive_name}"],
+  if ($unpacked_archive_name) {
+    ensure_resource('file', "${working_directory}/${unpacked_archive_name}", {
+      ensure  => directory,
+      recurse => true,
+      owner   => $owner,
+      group   => $owner,
+      require => Exec["unpack archive ${archive_name}"],
+    }
+    )
+  } else {
+    ensure_resource('file', "${working_directory}/${archive_name}", {
+      ensure  => directory,
+      recurse => true,
+      owner   => $owner,
+      group   => $owner,
+      require => Exec["unpack archive ${archive_name}"],
+    }
+    )
   }
-  )
 
 }

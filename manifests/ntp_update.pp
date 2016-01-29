@@ -1,6 +1,4 @@
-class puppet_common::ntp_update (
-  $include_file  = '/etc/ntp.conf',
-  $timezone_path = '/usr/share/zoneinfo/Australia/Queensland',) {
+class puppet_common::ntp_update ($include_file = '/etc/ntp.conf', $timezone_path = '/usr/share/zoneinfo/Australia/Queensland',) {
   Package {
     allow_virtual => false, }
 
@@ -43,6 +41,7 @@ class puppet_common::ntp_update (
     incl    => $include_file,
     lens    => 'Ntp.lns',
     changes => ["ins tinker before #comment[01]", "set tinker/panic 0"],
+    onlyif  => "get tinker/panic != '0'",
     require => Package['ntp'],
     notify  => Service[$ntp_service_name],
   }

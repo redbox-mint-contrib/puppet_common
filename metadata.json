@@ -1,13 +1,14 @@
 {
-  "name": "puppet-puppet_common",
-  "version": "0.1.0",
-  "summary": "UNKNOWN",
-  "author": "matt@redboxresearchdata.com.au",
-  "description": "UNKNOWN",
-  "dependencies": [],
-  "types": [],
-  "checksums": {},
-  "source": "UNKNOWN",
-  "project_page": "UNKNOWN",
-  "license": "Apache License, Version 2.0"
+	"name": "qcif-puppet_common",
+	"version": "0.1.0",
+	"summary": "miscellaneous manifests to support other puppet modules",
+	"author": "matt@redboxresearchdata.com.au",
+	"dependencies": [{
+			"name": "puppetlabs/stdlib",
+			"version_requirement": ">4.3.0 <=4.3.2"
+		}
+	],
+	"source": "https://github.com/redbox-mint-contrib/puppet_common",
+	"project_page": "https://github.com/redbox-mint-contrib/puppet_common",
+	"license": "GPL-2.0"
 }

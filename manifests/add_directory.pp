@@ -5,6 +5,7 @@ define puppet_common::add_directory (
   $recurse          = false,
   $mode             = '0750') {
   if ($parent_directory) {
+    $full_path = "${parent_directory}/${end_path}"
     create_parent_directories($full_path)
 
     ensure_resource(file, $parent_directory, {
@@ -15,7 +16,7 @@ define puppet_common::add_directory (
       mode    => $mode,
     }
     )
-    $full_path = "${parent_directory}/${end_path}"
+
   } else {
     $full_path = $end_path
   }

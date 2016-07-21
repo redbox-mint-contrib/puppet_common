@@ -27,10 +27,29 @@
 #   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #
 # # cumulative apache patches
-define puppet_common::patch_apache ($config_path = undef,) {
+define puppet_common::patch_apache (
+  $config_path = undef,
+  $exec_path   = hiera_array(exec_path, [
+    '/usr/local/bin',
+    '/opt/local/bin',
+    '/usr/bin',
+    '/usr/sbin',
+    '/bin',
+    '/sbin']),) {
+  Exec {
+    path      => $exec_path,
+    logoutput => false,
+  }
+
   case $::operatingsystem {
-    'centos', 'redhat', 'fedora' : { $config_path_default = '/etc/httpd/conf.d/patch.conf' }
-    'default'                    : { $ssl_config_path_default = '/etc/apache2/mods-enabled/patch.conf' }
+    'centos', 'redhat', 'fedora' : {
+      $config_path_default = '/etc/httpd/conf.d/patch.conf'
+      $service_reload = 'service httpd reload'
+    }
+    'default'                    : {
+      $ssl_config_path_default = '/etc/apache2/mods-enabled/patch.conf'
+      $service_reload = 'sudo /etc/init.d/apache2 reload'
+    }
   }
   $path = $config_path ? {
     undef   => $config_path_default,
@@ -39,15 +58,20 @@ define puppet_common::patch_apache ($config_path = undef,) {
 
   #  https://www.apache.org/security/asf-httpoxy-response.txt
   file_line { 'LoadModule headers_module modules/mod_headers.so':
-    path  => $path,
-    line  => 'LoadModule headers_module modules/mod_headers.so',
-    match => "^[^#]*.*mod_headers.so.*$",
+    path   => $path,
+    line   => 'LoadModule headers_module modules/mod_headers.so',
+    match  => "^[^#]*.*mod_headers.so.*$",
+    before => Exec['reload apache'],
   }
+
   #  https://www.apache.org/security/asf-httpoxy-response.txt
   file_line { 'RequestHeader unset Proxy early':
-    path  => $path,
-    line  => 'RequestHeader unset Proxy early',
-    match => "^[^#]*.*Proxy early.*$",
+    path   => $path,
+    line   => 'RequestHeader unset Proxy early',
+    match  => "^[^#]*.*Proxy early.*$",
+    before => Exec['reload apache'],
   }
+
+  exec { 'reload apache': command => $service_reload, }
 
 }

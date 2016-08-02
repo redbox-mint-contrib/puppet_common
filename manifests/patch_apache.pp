@@ -27,7 +27,7 @@
 #   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #
 # # cumulative apache patches
-define puppet_common::patch_apache (
+class puppet_common::patch_apache (
   $config_path = undef,
   $exec_path   = hiera_array(exec_path, [
     '/usr/local/bin',

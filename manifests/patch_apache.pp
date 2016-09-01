@@ -53,11 +53,11 @@ class puppet_common::patch_apache (
     default => $config_path,
   }
 
-  file { ["${path}.${load_extension}", "${path}.${conf_extension}"]: }
+  file { ["${path}${load_extension}", "${path}${conf_extension}"]: }
 
   #  https://www.apache.org/security/asf-httpoxy-response.txt
   file_line { 'LoadModule headers_module modules/mod_headers.so':
-    path    => "${path}.${load_extension}",
+    path    => "${path}${load_extension}",
     line    => 'LoadModule headers_module modules/mod_headers.so',
     match   => "^[^#]*.*mod_headers.so.*$",
     before  => Exec['reload apache'],
@@ -66,7 +66,7 @@ class puppet_common::patch_apache (
 
   #  https://www.apache.org/security/asf-httpoxy-response.txt
   file_line { 'RequestHeader unset Proxy early':
-    path    => "${path}.${conf_extension}",
+    path    => "${path}${conf_extension}",
     line    => 'RequestHeader unset Proxy early',
     match   => "^[^#]*.*Proxy early.*$",
     before  => Exec['reload apache'],

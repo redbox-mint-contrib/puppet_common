@@ -61,7 +61,7 @@ class puppet_common::patch_apache (
     line    => 'LoadModule headers_module modules/mod_headers.so',
     match   => "^[^#]*.*mod_headers.so.*$",
     before  => Exec['reload apache'],
-    require => File["${path}.${load_extension}"],
+    require => File["${path}${load_extension}"],
   }
 
   #  https://www.apache.org/security/asf-httpoxy-response.txt
@@ -70,7 +70,7 @@ class puppet_common::patch_apache (
     line    => 'RequestHeader unset Proxy early',
     match   => "^[^#]*.*Proxy early.*$",
     before  => Exec['reload apache'],
-    require => File["${path}.${conf_extension}"],
+    require => File["${path}${conf_extension}"],
   }
 
   exec { 'reload apache': command => $service_reload, }

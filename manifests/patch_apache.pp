@@ -28,14 +28,10 @@
 #
 # # cumulative apache patches
 class puppet_common::patch_apache (
-  $config_path = undef,
-  $exec_path   = hiera_array(exec_path, [
-    '/usr/local/bin',
-    '/opt/local/bin',
-    '/usr/bin',
-    '/usr/sbin',
-    '/bin',
-    '/sbin']),) {
+  $config_path    = undef,
+  $conf_extension = ".conf",
+  $load_extension = ".load",
+  $exec_path      = hiera_array(exec_path, ['/usr/local/bin', '/opt/local/bin', '/usr/bin', '/usr/sbin', '/bin', '/sbin']),) {
   Exec {
     path      => $exec_path,
     logoutput => false,
@@ -43,33 +39,38 @@ class puppet_common::patch_apache (
 
   case $::operatingsystem {
     'centos', 'redhat', 'fedora' : {
-      $config_path_default = '/etc/httpd/conf.d/patch.conf'
+      $config_path_default = '/etc/httpd/conf.d/patch'
       $service_reload = 'service httpd reload'
     }
     'default'                    : {
-      $ssl_config_path_default = '/etc/apache2/mods-enabled/patch.conf'
+      $ssl_config_path_default = '/etc/apache2/mods-enabled/patch'
       $service_reload = 'sudo /etc/init.d/apache2 reload'
     }
   }
+
   $path = $config_path ? {
     undef   => $config_path_default,
     default => $config_path,
   }
 
+  file { ["${path}.${load_extension}", "${path}.${conf_extension}"]: }
+
   #  https://www.apache.org/security/asf-httpoxy-response.txt
   file_line { 'LoadModule headers_module modules/mod_headers.so':
-    path   => $path,
-    line   => 'LoadModule headers_module modules/mod_headers.so',
-    match  => "^[^#]*.*mod_headers.so.*$",
-    before => Exec['reload apache'],
+    path    => "${path}.${load_extension}",
+    line    => 'LoadModule headers_module modules/mod_headers.so',
+    match   => "^[^#]*.*mod_headers.so.*$",
+    before  => Exec['reload apache'],
+    require => File["${path}.${load_extension}"],
   }
 
   #  https://www.apache.org/security/asf-httpoxy-response.txt
   file_line { 'RequestHeader unset Proxy early':
-    path   => $path,
-    line   => 'RequestHeader unset Proxy early',
-    match  => "^[^#]*.*Proxy early.*$",
-    before => Exec['reload apache'],
+    path    => "${path}.${conf_extension}",
+    line    => 'RequestHeader unset Proxy early',
+    match   => "^[^#]*.*Proxy early.*$",
+    before  => Exec['reload apache'],
+    require => File["${path}.${conf_extension}"],
   }
 
   exec { 'reload apache': command => $service_reload, }

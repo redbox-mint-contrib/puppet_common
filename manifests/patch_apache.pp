@@ -53,7 +53,9 @@ class puppet_common::patch_apache (
     default => $config_path,
   }
 
-  file { ["${path}${load_extension}", "${path}${conf_extension}"]: }
+  file { ["${path}${load_extension}", "${path}${conf_extension}"]:
+    ensure => file,
+  }
 
   #  https://www.apache.org/security/asf-httpoxy-response.txt
   file_line { 'LoadModule headers_module modules/mod_headers.so':

@@ -5,7 +5,7 @@
 	"author": "matt@redboxresearchdata.com.au",
 	"dependencies": [{
 			"name": "puppetlabs/stdlib",
-			"version_requirement": ">4.3.0 <=4.3.2"
+			"version_requirement": ">4.3.0"
 		}
 	],
 	"source": "https://github.com/redbox-mint-contrib/puppet_common",
